@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myAppModule">
+<head>
+	<meta charset="UTF-8">
+	<title>Home</title>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+	<!--In AngularJS 1.2.0 and later, ngRoute has been moved to its own module. If you are getting this error after upgrading to 1.2.x or later, be sure that you've installed ngRoute.-->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+	</script>
+	<script type="text/javascript" src="app.js"></script>
+	<script type='text/javascript' src='./controllers/controller.js'></script> 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script>
+		  var myAppModule = angular.module('myAppModule',['ngRoute']);
+
+		 //use the config method to set up routing
+			myAppModule.config(function($routeProvider){
+				$routeProvider
+					.when('/question', {
+						templateUrl: 'partials/question.html'
+					})
+					.when('/lets_play', {
+						templateUrl: 'partials/lets_play.html'
+					})
+					.when('/users', {
+						templateUrl: 'partials/users.html'
+					})
+					.otherwise({
+						redirectTo: '/'
+					});
+		});
+
+	</script>
+</head>
+<body class="container">
+	<h1 class="page-header">Black Belt Exam</h1>
+	 <input ng-model="name">
+		<p>
+			 Hi {{name}}
+		</p>
+	<div>
+		<ul class="nav nav-tabs">
+		 <li><a href="#/">Home</a></li>
+		 <li><a href="#/question">Add a question</a></li>
+		 <li><a href="#/lets_play">Lets play</a></li>
+		 <li><a href="#/users">Users</a></li>
+		</ul> 
+	 <div ng-view="">
+	 	
+	 </div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myAppModule">
+<head>
+	<meta charset="UTF-8">
+	<title>Add a Question</title>
+</head>
+<body>
+	<div ng-controller="QuestionController">
+		<h1>Add A Question</h1>
+		<form>
+			<div>
+				<label>Question</label>
+				<input type="text" ng-model="newQuestion.topic">
+			</div>
+			<div>
+				<label>Correct Answer</label>
+				<input type="text" ng-model = "newQuestion.correctAnswer">
+			</div>
+			<div>
+				<label>Fake Answer1</label>
+				<input type="text" ng-model = "newQuestion.fakeAnswer1">
+			</div>
+			<div>
+				<label>Fake Answer2</label>
+				<input type="text" ng-model = "newQuestion.fakeAnswer2">
+			</div>
+			<div>
+					<input type="submit" ng-click="add_question()">
+			</div>
+		
+		</form>
+	</div>
+	
+</body>
+</html>
