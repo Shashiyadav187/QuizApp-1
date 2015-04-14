@@ -1,7 +1,7 @@
 {
-  "name": "BlackBeltSecTry",
+  "name": "BlackBelt",
   "version": "1.0.0",
-  "description": "",
+  "description": "My MEAN STACK BLACK BELT EXAM",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.12.2",
@@ -15,6 +15,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "SIMI TRESA ANTONY",
   "license": "ISC"
 }

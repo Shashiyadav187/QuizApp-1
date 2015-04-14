@@ -14,7 +14,11 @@
 				<th>Created On</th>
 			</thead>
 			<tbody>
-				 
+				<tr ng-repeat="user in users">
+					<td>{{user.user_name}}</td>
+					<td>{{user.score}}</td>
+					<td>{{user.created_at|date:'MM/dd/yyyy @ h:mma'}}</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

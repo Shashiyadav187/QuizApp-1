@@ -7,16 +7,33 @@
 <body>
 	<div ng-controller="PlayController">
 		<h1>Lets Play</h1>
-		 
-		<table class="table table-striped">
-			<thead>
-				<th>Question</th>
-			</thead>
-			<tbody>
-			 
-			</tbody>
-			
-		</table> 
+		<div class="alert-success">
+			<h4>{{message}} Your Score : {{user_score}}..</h4>
+		</div>
+		
+			<button ng-click="play_again()" class="btn btn-warning">
+				Start Over <span class="glyphicon glyphicon-repeat"></span></button> 
+		
+
+
+				<form>
+					<h3>{{current_question.question}}</h3>
+					<div>
+							<label>{{current_question.correct_answer}}</label>
+					    <input type="radio"  name="answer" ng-model="answer" value="{{current_question.correct_answer}}">
+					</div>
+					<div>
+						<label>{{current_question.fake_answer1}}</label>
+					  <input type="radio" name="answer"  ng-model="answer" value="{{current_question.fake_answer1}}">
+					</div>
+					<div>
+					  <label>{{current_question.fake_answer2}}</label>
+					  <input type="radio" name="answer"  ng-model="answer" value="{{current_question.fake_answer2}}">
+			    </div>
+			    <div>
+			    	<input type="submit" class="btn btn-primary" ng-click="submit_answer(current_question,answer)">
+			    </div>
+	       </form>
 		 
 	</div>
 </body>
