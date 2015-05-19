@@ -9,21 +9,31 @@
 	</script>
 	<script type="text/javascript" src="app.js"></script>
 	<script type='text/javascript' src='./controllers/controller.js'></script> 
-	<script type='text/javascript' src='./factories/questionFactory.js'></script> 
+	<script type='text/javascript' src='./factories/factories.js'></script> 
+	<script type='text/javascript' src='./js/angular-local-storage.min.js'></script> 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
 </head>
 <body class="container">
-	<h1 class="page-header">Black Belt Exam</h1>
+	<h1 class="page-header">QUIZ APP</h1>
 	 
-	<div>
-		<ul class="nav nav-tabs">
-		 <li><a href="#/">Home</a></li>
-		 <li><a href="#/question">Add a question</a></li>
-		 <li><a href="#/lets_play">Lets play</a></li>
-		 <li><a href="#/users">Users</a></li>
-		</ul> 
-	 <div ng-view="">
+	<div ng-controller="LogController">
+		<div ng-show="message">
+			<div class="alert alert-success">{{message}}</div>
+		</div>
+		<div ng-show="current_user">
+			<h4>Welcome !! {{current_user}}</h4>
+			<ul class="nav nav-tabs">
+			 <li><a href="#/home">Home</a></li>
+			 <li><a href="#/question">Add a question</a></li>
+			 <li><a href="#/lets_play">Lets Play</a></li>
+			 <li><a href="#/login" ng-show="!current_user">Login</a></li>
+			 <li><a href="#/users">Users</a></li>
+			 <li><a href="#/logout" ng-click="logout()" ng-show="current_user">Logout</a></li>
+			</ul> 
+	  </div>
+		
+	 <div ng-view="" class="well">
 	 	
 	 </div>
 	</div>

@@ -25,38 +25,89 @@ mongoose.connect('mongodb://localhost/BlackBelt');
 
 var QuestionSchema = mongoose.Schema({
   question          : String,
-  correct_answer    : String,
-  fake_answer1      : String,
-  fake_answer2      : String,
   created_at        :{type:Date,default:Date.now}
 });
 var Question = mongoose.model('Question',QuestionSchema);
 
+
+var AnswerSchema = mongoose.Schema({
+  answer            : String,
+  is_correct        : {type:Boolean,default:false},
+  question_id       : String,
+  created_at        : {type:Date,default:Date.now}
+});
+var Answer = mongoose.model('Answer',AnswerSchema);
+
+
 var UserSchema = mongoose.Schema({
   user_name          : String,
   score              : {type:Number,default:0},
-  created_at        :{type:Date,default:Date.now}
+  created_at         : {type:Date,default:Date.now}
 });
 var User = mongoose.model('User',UserSchema);
 
 //-------------------------------------------------------//
 app.post('/new_question',function(request,response){
-  console.log(request.body);
-  var new_question = new Question({question:request.body.topic,
-                                   correct_answer :request.body.correctAnswer,
-                                   fake_answer1:request.body.fakeAnswer1,
-                                    fake_answer2  :request.body.fakeAnswer2 });
+  //console.log(request.body);
+  var  question = request.body.topic;
+  var  new_question = new Question({question:question});
+
+  // ----------Save the new Question--------------
   new_question.save(function(error,db_result){
     if(error){
-      response.json(error);
-      console.log(error);
+      response.json("--------Question"+ question+"cannot be created--------",error);
+      console.log("----------Question"+ question+"cannot be created--------",error);
     }
     else{
       response.json(db_result);
-        console.log("------------question created------------------");
+      console.log("--------Question"+ question+"created--------",db_result._id);
+      console.log("----------answer is ",request.body.correctAnswer);
+      //CREATE THE ANSWERS
+      var correct_answer = new Answer({answer:request.body.correctAnswer,is_correct:true,question_id:db_result._id});
+      correct_answer.save(function(error,db_result){
+        if(error){
+          console.log(request.body.correctAnswer+"cannot be created",error);
+        }
+        else{
+          console.log(request.body.correctAnswer+"created",db_result);
+        }
+      });
+
+      var fake_answer1   = new Answer({answer:request.body.fakeAnswer1, question_id:db_result._id});
+      fake_answer1.save(function(error,db_result){
+        if(error){
+          console.log(request.body.fakeAnswer1+"cannot be created",error);
+        }
+        else{
+          console.log(request.body.fakeAnswer1+"created",db_result);
+        }
+      });
+      var fake_answer2   = new Answer({answer:request.body.fakeAnswer2, question_id:db_result._id});
+      fake_answer2.save(function(error,db_result){
+        if(error){
+          console.log(request.body.fakeAnswer2+"cannot be created",error);
+        }
+        else{
+          console.log(request.body.fakeAnswer2+"created",db_result);
+        }
+      });
+      
     }
-  })
-})
+  });
+});
+
+app.post('/answers_for_question',function(request,response){
+  var question_id = request.body.question_id;
+  //-------------Find all answers for this qestion----------
+  Answer.find({question_id:question_id},function(error,db_result){
+    if(error){
+      console.log("--------------ANSWERS FOR THIS QUESTION CANNOT BE FETCHED",error);
+    }else{
+       response.json(db_result);
+    }
+  });
+
+});
 
 app.get('/questions',function(request,response){
   Question.find({},function(error,db_result){

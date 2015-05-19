@@ -1,3 +1,60 @@
+
+myAppModule.controller('LoginController',function ($scope,$http,$location,localStorageService) {
+		//alert("-------controller Ready----------")
+	$scope.users = [
+	{	name :"my_username@email.com",password : "1234"} 
+		];
+	$scope.current_user = "";
+	$scope.warning      = "";
+	var match_found     = false;
+
+  $scope.login_user=function(){
+ 	console.log($scope.user);
+ 	var current_user = $scope.user;
+ 	var users = $scope.users ;
+ 	if(current_user=== undefined ||current_user.name === undefined ||current_user.name === undefined ){
+ 			$scope.warning = "Please enter user name and password!!!!!";
+ 	 }
+ 	else{
+ 		for (var index = 0; index < users.length; index++) {
+	 		if(current_user.name === users[index].name && current_user.password === users[index].password ){
+	 			 console.log("Inside");
+	 			 match_found = true;	 
+	 		} 
+ 		};
+
+ 		if(match_found===true){
+ 			$scope.warning = "";
+			localStorageService.set("current_user_name", current_user.name );
+ 			$location.path('/lets_play/'+current_user.name);
+ 			$scope.current_user = localStorageService.get("current_user_name");
+ 			console.log($scope.current_user);
+ 		}
+ 		else{
+ 			$scope.warning = "Sorry !!! Not a valid user, TRY AGAIN!!!!!";
+	 		$location.path('/login');
+ 		}
+ 	}
+ 	
+ }
+  
+ //$location.path('/lets_play');
+
+});
+myAppModule.controller('LogController',function($scope,localStorageService,$location){
+	
+	if(! (localStorageService.get("current_user_name")===undefined) ){
+		$scope.current_user=localStorageService.get("current_user_name"); 
+	}
+
+	$scope.logout = function(){
+		localStorageService.remove("current_user_name");
+		$scope.message = "-------------Logged Out successfully------------";
+	 	$location.path('/login');
+	 	$scope.current_user ="";
+	}
+});
+
 myAppModule.controller('QuestionController',function ($scope,$http) {
 	//alert("-------controller Ready----------")
 
@@ -11,25 +68,57 @@ myAppModule.controller('QuestionController',function ($scope,$http) {
 
 });
 
-myAppModule.controller('PlayController',function ($scope,questionFactory,$http) {
+myAppModule.controller('PlayController',function ($scope,questionFactory,$http,localStorageService,$location) {
 	//alert("-------controller Ready----------")
-  
-	  var user_name = prompt("Enter name");
+	
+	angular.element(document).ready(function () {
+	
+		if(! (localStorageService.get("current_user_name")===undefined) ){
+
+		$scope.current_user=localStorageService.get("current_user_name"); //
+    //console.log($scope.current_user );
+	  var user_name = $scope.current_user;
     var current_user =''; 
     var all_questions ={};
 
      $scope.questions ={} ; 
      $scope.current_question ={};
+     $scope.current_question_answers = [];
+     $scope.game_over = false;
+     $scope.show_game = true;
+
 	 
-	  $scope.user_score = 0;
+	   $scope.user_score = 0;
 
      var index = 0;
+    
+		//-----------------Get all Questions--------------
+		 questionFactory.get_all_questions(function(data){
+		 	$scope.questions = data;
+		 	console.log("-----------questions-------",data);
+		 	$scope.current_question = $scope.questions[index];
+		 		get_answers($scope.current_question._id);
+		  
+		 });
 
+		 //--------------Game Start Over---------------------
      $scope.play_again = function(){
      	 index = 0;
      	 $scope.current_question = $scope.questions[index];
+     	 var question_id         = $scope.current_question._id;
+ 			 //-----------GET ALL ANSWERS FOR CURRENT QUESTION------------
+       get_answers(question_id);
      	 $scope.user_score = 0;
+     	 $scope.show_game = true;
+     	 $scope.game_over = false;
+
      }
+
+   function get_answers(question_id){
+   		questionFactory.get_all_answers_for_question(question_id,function(data){
+     	$scope.current_question_answers = data;	
+     });
+   }
 	
 	function create_user(){
 		user ={user_name:user_name,score:0}
@@ -38,64 +127,46 @@ myAppModule.controller('PlayController',function ($scope,questionFactory,$http) 
 			current_user=server_response;
 		});
 	}	 
-
-
-	$scope.submit_answer = function(current_question,answer){
+  //-----------------Calclate Score=--------------------------
+	$scope.submit_answer = function(current_question){
 		console.log(current_question);
-		console.log(answer);
+	 
 		if(index === $scope.questions.length){
+			$scope.game_over = true;
+			$scope.show_game = false;
 			 console.log("Game over");
 			 $scope.message="------- Game Over -------";
 		}
 		else{
-			var question = current_question; 
-			var user_answer = answer;
+			var question                   = current_question; 
+			var is_selected_answer_correct = $scope.answer;
+		  console.log(is_selected_answer_correct);
 
-			//find the question
-			$http.get('/get_question/'+question._id).success(function(server_response){
-				var question = server_response;
-				//console.log(server_response);
-				var correct_answer = server_response.correct_answer;
-				//console.log(correct_answer);
-				 if(correct_answer === user_answer){
-			 		$scope.user_score++;
-			 		var new_score = $scope.user_score;
-			 		var user_details = {id:current_user._id,score:new_score};
-			 		console.log(current_user._id);
+			if(is_selected_answer_correct==='true'){
+				$scope.user_score = $scope.user_score + 1;
+				console.log($scope.user_score);
+			}
 
-			 		//-----------------Update score for user---------------
-			 		$http.post('/update_user/',user_details).success(function(server_response){
-			 			console.log("------------------updated user records------------------------");
-			 			//console.log(server_response);
-			 		});	
-			 		//console.log($scope.user_score);
-				 }
-				 
-			});
-
+			//----------------Increment the question count------------------
 			index++;
-			console.log("no");
-			$scope.current_question = $scope.questions[index];
+		  if(index !== $scope.questions.length){
+
+		  	$scope.current_question = $scope.questions[index];
+			  get_answers($scope.current_question._id);
+		   }
+			
 		}//end of else
 	
-
-
 	}//end of submit_answer()
 
-
-	 questionFactory.get_all_questions(function(data){
-	 	$scope.questions = data;
-	 	$scope.current_question = $scope.questions[index];
-	  
-	 });
-	
-	  
-
-	
 	create_user();
+}
+else{
+ 	$location.path('/login');
+}
+    
+});//-------------------------end of Doc ready
 
- 
- 
 });
 
 myAppModule.controller('UsersController',function ($scope,$http) {
