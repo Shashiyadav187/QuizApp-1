@@ -6,24 +6,28 @@
 </head>
 <body>
 	<div ng-controller="PlayController">
-		<h1>Lets Play</h1>
-		<div class="alert-success">
-			<h4 ng-show="game_over">{{message}} Your Score : {{user_score}}..</h4>
-		</div>
-		<button ng-click="play_again()" ng-show="game_over" class="btn btn-warning">
+		<button ng-click="play_again()" ng-show="game_over" class="btn btn-primary">
 			Start Over <span class="glyphicon glyphicon-repeat"></span>
 		</button> 
-		<div ng-show="show_game">
-				<h3>{{current_question.question}}</h3>
-				<form>
-					<div  ng-repeat="answer in current_question_answers" >
-						<label>{{answer.answer}}</label>
-						<!--ng-repeat creates its own $scope. so you need to refer to the $parent $scope;  
-						 AngularJS is tricky. and change value to ng-value -->
-				    <input type="radio" value="{{answer.is_correct}}"  name="answer" ng-model="$parent.answer">
-					</div>
-				  <input type="submit" class="btn btn-primary" ng-click="submit_answer(current_question.question)">
-				</form>    
+
+		<div class="alert-info" ng-show="game_over">
+			<h4>{{message}} Your Score : {{user_score}}..</h4>
+		</div>
+		
+		<h1  ng-show="show_game">Lets Play !!</h1>
+		<div ng-show="show_game" class="quiz">
+			<h3 class="quest">{{current_question.question}}?</h3>
+			<form>
+				<div  ng-repeat="answer in current_question_answers" >
+					<label>{{answer.answer}}</label>
+					<!--ng-repeat creates its own $scope. so you need to refer to the $parent $scope;  
+					 AngularJS is tricky. and change value to ng-value -->
+			    <input type="radio" value="{{answer.is_correct}}"  
+			           name="answer" ng-model="$parent.answer">
+				</div>
+			  <button class="btn btn-primary" 
+			         ng-click="submit_answer(current_question.question)">Submit</button>
+			</form>    
 		</div>
 	</div>
 </body>

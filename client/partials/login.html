@@ -1,19 +1,16 @@
 <div ng-controller="LoginController">
 	<div ng-show="!current_user">
-		<h2 class="page-header">Login</h2>	
-		<p>
-			Test Application using <strong>UserName = my_username@email.com </strong> && 
-			                         <strong>password  = 1234</strong>
-		</p>
-		<div ng-show="warning" class="alert alert-danger">
+		<h1 class="page-header">Login</h1>	
+	 
+		<div ng-show="warning" class="alert alert-info">
 			<p>{{warning}}</p>
 		</div>
-		<form>
+		<form class="login">
 			<label>User Name</label>
-			<input type="text" ng-model="user.name">
+			<input type="text" ng-model="user.name" placeholder="my_username@email.com">
 			<label>Password</label>
-			<input type="text" ng-model="user.password">
-			<button class="btn btn-success" ng-click="login_user()">Login</button>
+			<input type="text" ng-model="user.password" placeholder="1234">
+			<button class="btn btn-primary" ng-click="login_user()">Login</button>
 		</form>	
 	</div>
 </div>

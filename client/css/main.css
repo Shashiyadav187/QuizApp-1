@@ -1,0 +1,70 @@
+body{
+	background: url('/images/clouds.jpg');
+}
+h1{
+	font-family: 'Goudy Old Style', Garamond, 'Big Caslon', 'Times New Roman', serif;
+}
+h1,h2,h3,h4{
+	color: white;
+}
+h4{
+	font-style: italic;
+}
+h2{
+	font-family: 'Brush Script MT', cursive;
+}
+.quiz{
+		margin: 20px;
+}
+.quiz form{
+	width: 500px;
+	background: white;
+	border: 2px solid black;
+	padding: 20px;
+	border-radius: 5px;
+}
+.quiz input{
+	float: left;
+}
+.quiz label{
+  margin-left: 10px;
+}
+.quiz label , h4,.quest{
+ 	font-weight: bold;
+ 	font-size: 20px;
+ 	font-family: Papyrus, fantasy;
+}
+.well{
+	margin:20px;
+}
+.alert-info{
+	padding: 10px;
+	margin:60px;
+	color: black;
+	width: 600px;
+}
+.alert-info h4{
+	font-size: 25px;
+	font-weight: bold;
+	font-style: oblique;
+}
+button{
+	margin:10px;
+}
+ .nav-tabs li a{
+	color: white;
+	font-size: 18px;
+	font-family: Copperplate, 'Copperplate Gothic Light', fantasy;
+}
+ .nav-tabs li a:hover{
+	color: black;
+}
+p{
+	font-family: cursive;
+	font-size: 20px;
+	color: white;
+}
+.login{
+	font-size: 15px;
+	color: white;
+}

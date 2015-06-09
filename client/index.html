@@ -12,17 +12,17 @@
 	<script type='text/javascript' src='./factories/factories.js'></script> 
 	<script type='text/javascript' src='./js/angular-local-storage.min.js'></script> 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body class="container">
-	<h1 class="page-header">QUIZ APP</h1>
+	<h1>QUIZ APP</h1>
 	 
 	<div ng-controller="LogController">
 		<div ng-show="message">
-			<div class="alert alert-success">{{message}}</div>
+			<div class="alert alert-info">{{message}}</div>
 		</div>
 		<div ng-show="current_user">
-			<h4>Welcome !! {{current_user}}</h4>
+			 
 			<ul class="nav nav-tabs">
 			 <li><a href="#/home">Home</a></li>
 			 <li><a href="#/question">Add a question</a></li>
@@ -33,7 +33,7 @@
 			</ul> 
 	  </div>
 		
-	 <div ng-view="" class="well">
+	 <div ng-view="">
 	 	
 	 </div>
 	</div>
